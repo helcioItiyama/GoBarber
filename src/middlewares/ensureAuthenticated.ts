@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { verify } from 'jsonwebtoken';
 import authConfig from '../config/auth';
+import AppError from '../error/AppError';
 
 interface TokenPayload {
   iat: number;
@@ -16,7 +17,7 @@ export default function ensureAuthenticated(
     const authHeader = request.headers.authorization;
 
     if(!authHeader) {
-      throw new Error('DWT is missing.');
+      throw new AppError('DWT is missing.', 401);
     }
 
     const [,token] = authHeader.split(' ');
