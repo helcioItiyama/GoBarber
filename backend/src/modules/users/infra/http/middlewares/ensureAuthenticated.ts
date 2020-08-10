@@ -10,30 +10,29 @@ interface TokenPayload {
 }
 
 export default function ensureAuthenticated(
-  request:Request, 
-  response:Response, 
-  next:NextFunction):void {
+  request: Request,
+  response: Response,
+  next: NextFunction,
+): void {
+  const authHeader = request.headers.authorization;
 
-    const authHeader = request.headers.authorization;
+  if (!authHeader) {
+    throw new AppError('DWT is missing.', 401);
+  }
 
-    if(!authHeader) {
-      throw new AppError('DWT is missing.', 401);
-    }
+  const [, token] = authHeader.split(' ');
 
-    const [,token] = authHeader.split(' ');
-    
-    try {
-      const decoded = verify(token, authConfig.jwt.secret);
+  try {
+    const decoded = verify(token, authConfig.jwt.secret);
 
-      const { sub } = decoded as TokenPayload;
-      
-      request.user = {
-        id: sub,
-      };
+    const { sub } = decoded as TokenPayload;
 
-      next();
-    } catch {
-      throw new Error('Invalid JWT token')
-    }
+    request.user = {
+      id: sub,
+    };
 
+    next();
+  } catch {
+    throw new Error('Invalid JWT token');
+  }
 }
