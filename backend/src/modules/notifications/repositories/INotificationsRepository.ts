@@ -1,4 +1,3 @@
-import ICreateAppointmentDTO from '@modules/appointments/dtos/ICreateAppointmentDTO';
 import ICreateNotificationDTO from '../dtos/ICreateNotificationDTO';
 import Notification from '../infra/typeorm/schemas/Notification';
 
