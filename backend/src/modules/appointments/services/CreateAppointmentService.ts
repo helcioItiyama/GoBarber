@@ -36,14 +36,6 @@ class CreateAppointmentService {
       throw new AppError('You should choose a date in the future');
     }
 
-    const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(
-      appointmentDate,
-    );
-
-    if (findAppointmentInSameDate) {
-      throw new AppError('This appointment is already booked');
-    }
-
     if (user_id === provider_id) {
       throw new AppError('You should not choose an appointment to yourself');
     }
@@ -52,6 +44,15 @@ class CreateAppointmentService {
       throw new AppError(
         'You can only choose an appointment between 8am and 5pm',
       );
+    }
+
+    const findAppointmentInSameDate = await this.appointmentsRepository.findByDate(
+      appointmentDate,
+      provider_id,
+    );
+
+    if (findAppointmentInSameDate) {
+      throw new AppError('This appointment is already booked');
     }
 
     const appointment = await this.appointmentsRepository.create({
