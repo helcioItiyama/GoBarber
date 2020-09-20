@@ -1,5 +1,11 @@
 node_modules/
+buid/
+.idea/
+.vscode/
+
+temp/*
+!temp/.gitkeep
+coverage/
+.DS_Store
 .env
 ormconfig.json
-tmp/*
-!tmp/.gitKeep
